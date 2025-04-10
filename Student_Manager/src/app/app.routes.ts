@@ -4,7 +4,7 @@ import { RegistrationComponent } from './Register/registration/registration.comp
 
 export const routes: Routes = [
 {
-  path:"login",
+  path:"",
   component:LoginComponent
 },
 {

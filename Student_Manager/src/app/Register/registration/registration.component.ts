@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import axios from 'axios';  // ✅ Import Axios
 
 @Component({
   selector: 'app-registration',
@@ -21,9 +22,17 @@ export class RegistrationComponent {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.userForm.valid) {
       console.log('Form Submitted!', this.userForm.value);
+
+      try {
+        const response = await axios.post('http://localhost:5000/user', this.userForm.value);
+        console.log('API response:', response.data);
+      } catch (error) {
+        console.error('API error:', error);
+      }
+
     } else {
       this.userForm.markAllAsTouched();
     }
