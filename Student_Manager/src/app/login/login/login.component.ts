@@ -23,16 +23,17 @@ export class LoginComponent {
  }
   async onSubmit(){
   if(this.adminForm.valid){
-   console.log("login form details "+this.adminForm.value);
+ //  console.log("login form details "+this.adminForm.value);
 
    try {
     const response = await axios.post('http://localhost:5000/login', this.adminForm.value);
-    console.log('API response:', response.data);
+  //  console.log('API response:', response.data);
     localStorage.setItem('token', response.data);
     this.router.navigate(['/admin']);
 
 
   } catch (error) {
+    alert("User Not Found ")
     console.error('API error:', error);
   }
   }
