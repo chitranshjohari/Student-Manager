@@ -1,33 +1,54 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="container mt-5 p-4 border rounded shadow-sm bg-light" novalidate>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" *ngIf="!otpSent" class="container mt-5 p-4 border rounded shadow-sm bg-light" novalidate>
   <h3 class="mb-4 text-primary">Student Registration</h3>
 
   <div class="mb-3">
     <label for="name" class="form-label">Name</label>
-    <input id="name" type="text" class="form-control" formControlName="name" [ngClass]="{'is-invalid': userForm.get('name')?.touched && userForm.get('name')?.invalid}">
+    <input id="name" type="text" class="form-control" formControlName="name"
+      [ngClass]="{'is-invalid': userForm.get('name')?.touched && userForm.get('name')?.invalid}">
     <div class="invalid-feedback" *ngIf="userForm.get('name')?.errors?.['required']">Name is required.</div>
     <div class="invalid-feedback" *ngIf="userForm.get('name')?.errors?.['minlength']">Minimum 3 characters.</div>
   </div>
 
   <div class="mb-3">
     <label for="email" class="form-label">Email</label>
-    <input id="email" type="email" class="form-control" formControlName="email" [ngClass]="{'is-invalid': userForm.get('email')?.touched && userForm.get('email')?.invalid}">
+    <input id="email" type="email" class="form-control" formControlName="email"
+      [ngClass]="{'is-invalid': userForm.get('email')?.touched && userForm.get('email')?.invalid}">
     <div class="invalid-feedback" *ngIf="userForm.get('email')?.errors?.['required']">Email is required.</div>
     <div class="invalid-feedback" *ngIf="userForm.get('email')?.errors?.['email']">Invalid email format.</div>
   </div>
 
   <div class="mb-3">
     <label for="phone" class="form-label">Phone</label>
-    <input id="phone" type="text" class="form-control" formControlName="phone" [ngClass]="{'is-invalid': userForm.get('phone')?.touched && userForm.get('phone')?.invalid}">
-    <div class="invalid-feedback" *ngIf="userForm.get('phone')?.errors?.['required']">Phone is required.</div>
-    <div class="invalid-feedback" *ngIf="userForm.get('phone')?.errors?.['pattern']">Must be a 10-digit number.</div>
+    <input id="phone" type="text" class="form-control" formControlName="phoneNumber"
+      [ngClass]="{'is-invalid': userForm.get('phoneNumber')?.touched && userForm.get('phoneNumber')?.invalid}">
+    <div class="invalid-feedback" *ngIf="userForm.get('phoneNumber')?.errors?.['required']">Phone is required.</div>
+    <div class="invalid-feedback" *ngIf="userForm.get('phoneNumber')?.errors?.['pattern']">Must be a 10-digit number.</div>
   </div>
 
-  <div class="mb-4">
-    <label for="password" class="form-label">Password</label>
-    <input id="password" type="password" class="form-control" formControlName="password" [ngClass]="{'is-invalid': userForm.get('password')?.touched && userForm.get('password')?.invalid}">
-    <div class="invalid-feedback" *ngIf="userForm.get('password')?.errors?.['required']">Password is required.</div>
-    <div class="invalid-feedback" *ngIf="userForm.get('password')?.errors?.['minlength']">Minimum 6 characters required.</div>
-  </div>
+ 
 
   <button type="submit" class="btn btn-primary w-100">Submit</button>
 </form>
+
+<!-- OTP Verification Section -->
+<div *ngIf="otpSent && !otpVerified" class="container mt-5 p-4 border rounded shadow-sm bg-light">
+  <h4 class="text-success mb-3">OTP sent to your email</h4>
+
+  <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+    <div class="mb-3">
+      <label for="otp" class="form-label">Enter OTP</label>
+      <input id="otp" type="text" class="form-control" formControlName="otp"
+        [ngClass]="{'is-invalid': otpForm.get('otp')?.touched && otpForm.get('otp')?.invalid}">
+      <div class="invalid-feedback" *ngIf="otpForm.get('otp')?.errors?.['required']">OTP is required.</div>
+      <div class="invalid-feedback" *ngIf="otpForm.get('otp')?.errors?.['pattern']">OTP must be 6 digits.</div>
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">Verify OTP</button>
+  </form>
+</div>
+
+<!-- Success Message -->
+<div *ngIf="otpVerified" class="container mt-5 p-4 text-center border rounded shadow-sm bg-light">
+  <h4 class="text-success">🎉 Registration Successful!</h4>
+  <p>Welcome aboard, {{ userForm.value.name }}!</p>
+</div>
